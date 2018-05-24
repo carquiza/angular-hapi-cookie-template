@@ -46,6 +46,22 @@ module.exports = [
     },
     {
         method: '*',
+        path: '/auth/login_email',
+        options: {
+            auth: {
+                strategy: 'simple',
+            },
+            handler: function (request, h) {
+                if (!request.auth.isAuthenticated) {
+                    return 'Authentication failed: ' + request.auth.error.message;
+                }
+                const displayName = request.auth.credentials.displayName;
+                return { displayName: displayName };
+            }
+        }
+    },
+    {
+        method: '*',
         path: '/auth/login_facebook',
         options: {
             auth: {

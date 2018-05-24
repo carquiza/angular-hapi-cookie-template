@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { environment } from '../environments/environment';  
 
@@ -60,30 +60,39 @@ export class AppComponent implements OnInit {
   }
 
   doLogin() {
-    let payload = { email: this.email, password: this.password };
-    this.http.post('auth/login', payload).subscribe((data) => {
-        if (data['token'])
-        {
-          this.auth.setToken(data['token']);
-          this.isLoggedIn = true;
-          localStorage.setItem('credentials', JSON.stringify(data['credentials']));
-          this.updateCredentials();
-        }
-        else if (data['error'])
-        {
-          console.log(data['error']);
-          this.error = `Login error: ${data['error']}`;
-        }
-        else
-        {
-          console.log(data);
-          this.error = `Login error: ${data.toString()}`;
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.error = `Error: ${error}`;
-      });
+    var auth = `Basic ` + btoa(this.email + ":" + this.password);
+    let headers = new HttpHeaders({ Authorization: auth });
+    this.http.post(`auth/login_email`, {}, {
+      headers: headers
+    }).subscribe((data) => {
+      this.isLoggedIn = true;
+      this.displayName = data["displayName"];
+      this.displayImage = '';
+    });
+
+    //this.http.post(url, {}).subscribe((data) => {
+    //    if (data['token'])
+    //    {
+    //      this.auth.setToken(data['token']);
+    //      this.isLoggedIn = true;
+    //      localStorage.setItem('credentials', JSON.stringify(data['credentials']));
+    //      this.updateCredentials();
+    //    }
+    //    else if (data['error'])
+    //    {
+    //      console.log(data['error']);
+    //      this.error = `Login error: ${data['error']}`;
+    //    }
+    //    else
+    //    {
+    //      console.log(data);
+    //      this.error = `Login error: ${data.toString()}`;
+    //    }
+    //  },
+    //  (error) => {
+    //    console.log(error);
+    //    this.error = `Error: ${error}`;
+    //  });
   }
 
   doLogout() {

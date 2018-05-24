@@ -38,7 +38,6 @@
     <Content Include="src\tsconfig.spec.json" />
     <TypeScriptCompile Include="src\app\auth.service.spec.ts" />
     <TypeScriptCompile Include="src\app\auth.service.ts" />
-    <TypeScriptCompile Include="src\app\auth\token.interceptor.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
     <TypeScriptCompile Include="src\test.ts" />
@@ -56,7 +55,6 @@
     <Folder Include="e2e" />
     <Folder Include="src" />
     <Folder Include="src\app" />
-    <Folder Include="src\app\auth\" />
     <Folder Include="src\assets" />
     <Folder Include="src\environments" />
   </ItemGroup>

@@ -1,15 +1,26 @@
 ﻿require('dotenv').  config();
 
 const Hapi = require('hapi');
-const Bell = require('bell');
 const AuthCookie = require('hapi-auth-cookie');
+const Bell = require('bell');
+const AuthBasic = require('hapi-auth-basic');
 
 const routes = require('./routes');
+
+const validate = async (request, username, password, h) => {
+    return {
+        isValid: true,
+        credentials:
+        {
+            displayName: username
+        }
+    };
+}
 
 const init = async () => {
     const server = Hapi.Server({ port: 3030 });
     try {
-        await server.register([AuthCookie, Bell]);
+        await server.register([AuthCookie, Bell, AuthBasic]);
     }
     catch (err)
     {
@@ -23,6 +34,8 @@ const init = async () => {
         isSecure: false,
         clearInvalid:true
     });
+
+    server.auth.strategy('simple', 'basic', { validate });
 
     server.auth.strategy('facebook', 'bell', {
         provider: 'facebook',
