@@ -1,5 +1,3 @@
-
-
 module.exports = [
     {
         method: "GET", path: "/",
@@ -12,6 +10,26 @@ module.exports = [
         method: '*', path: '/auth/me',
         options: { auth: 'session' },
         handler: function (request, h) {
+            if (request.auth.isAuthenticated)
+            {
+                var displayImage = '';
+                if (request.auth.credentials.provider == 'facebook')
+                {
+                    displayImage = `http://graph.facebook.com/${request.auth.credentials.facebookId}/picture?type=square`;
+                }
+                else if (request.auth.credentials.provider == 'google')
+                {
+                    displayImage = 'http://lh6.ggpht.com/-btLsReiDeF0/AAAAAAAAAAI/AAAAAAAAAAA/GXBpycNk984/s64-c/filename.jpg';
+                };
+                return {
+                    displayName: request.auth.credentials.displayName,
+                    displayImage: displayImage
+                }
+            }
+            else
+            {
+                return {};
+            }
             return `Hello ${request.auth.credentials.displayName} from ${request.auth.credentials.provider}`;
         }
     },
@@ -42,8 +60,7 @@ module.exports = [
                 const profile = request.auth.credentials.profile;
                 request.cookieAuth.set({
                     provider: 'facebook',
-                    facebookId: profile.id,
-                    displayName: profile.displayName
+                    facebookId: profile.id,             displayName: profile.displayName
                 });
                 return h.redirect('/');
             }

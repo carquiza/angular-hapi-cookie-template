@@ -24,6 +24,21 @@ export class AppComponent implements OnInit {
   error: string = null;
 
   updateCredentials() {
+    this.http.get('/auth/me').subscribe(
+      (data) => {
+        if (data["displayName"]) {
+          this.isLoggedIn = true;
+          this.displayName = data["displayName"];
+          this.displayImage = data["displayImage"];
+        }
+        else
+        {
+          this.isLoggedIn = false;
+          this.displayName = "";
+          this.displayImage = "";
+        }
+      }
+    )
     this.isLoggedIn = this.auth.isAuthenticated();
     let credentials_string = localStorage.getItem('credentials');
     if (credentials_string) {
@@ -93,7 +108,7 @@ export class AppComponent implements OnInit {
   }
 
   doGoogleLogin = () => {
-    var url = `auth/login_facebook`;
+    var url = `auth/login_google`;
     window.location.href = url;
   }
 }
