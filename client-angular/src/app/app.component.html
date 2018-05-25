@@ -1,8 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<mat-toolbar>
+  <span>App</span>
+</mat-toolbar>
+
+<app-login *ngIf="!isLoggedIn">
+
+</app-login>
+
 <div style="text-align:left">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
 
   <div *ngIf="isLoggedIn">
     Login: {{loginType}}<br />
@@ -12,11 +17,6 @@
   </div>
   <div *ngIf="!isLoggedIn">
     (Any username/password will do)<br />
-    Email: <input [(ngModel)]="email" type="email" /><br />
-    Password: <input [(ngModel)]="password" type="password" /><br />
-    <button (click)="doLogin()">Log in</button><br />
-    <button (click)="doFacebookLogin()">Log in using Facebook</button><br />
-    <button (click)="doGoogleLogin()">Log in using Google</button><br />
   </div>
 
   <button (click)="tryAuthorizedOnly()">Try authorized page</button><br />

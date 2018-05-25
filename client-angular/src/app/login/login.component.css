@@ -1,0 +1,15 @@
+.card
+{
+  position:relative;
+  border-radius:5px;
+  margin: 50px;
+
+  align-content: center;
+  width: 600px;
+}
+
+.title
+{
+  font-weight: bolder;
+  font-size: xx-large;
+}

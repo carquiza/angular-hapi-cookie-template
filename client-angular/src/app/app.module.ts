@@ -2,18 +2,27 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
+import { MatToolbarModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
 import { AuthService } from './auth.service';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AngularFontAwesomeModule,
+
+    MatButtonModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule
   ],
   providers: [
     AuthService

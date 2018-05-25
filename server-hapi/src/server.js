@@ -1,4 +1,4 @@
-﻿require('dotenv').  config();
+﻿require('dotenv').config();
 
 const Hapi = require('hapi');
 const AuthCookie = require('hapi-auth-cookie');

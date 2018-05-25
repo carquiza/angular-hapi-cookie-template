@@ -13,6 +13,8 @@
     "dotenv": "^5.0.1",
     "hapi": "^17.5.0",
     "hapi-auth-basic": "^5.0.0",
-    "hapi-auth-cookie": "^8.1.0"
+    "hapi-auth-cookie": "^8.1.0",
+    "knex": "^0.14.6",
+    "mysql": "^2.15.0"
   }
 }

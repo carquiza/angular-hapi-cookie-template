@@ -24,11 +24,14 @@
     <Content Include=".env.template" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="migrations\" />
     <Folder Include="src\" />
     <Folder Include="src\controllers\" />
     <Folder Include="src\auth\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="knexfile.js" />
+    <Compile Include="migrations\20180525144106_Users.js" />
     <Compile Include="src\auth\auth_facebook.js">
       <SubType>Code</SubType>
     </Compile>
