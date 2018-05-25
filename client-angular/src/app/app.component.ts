@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
 
   displayName: Observable<string>;
-  displyImage: Observable<string>;
+  displayImage: Observable<string>;
 
   constructor(private auth: AuthService) {
     this.displayName = auth.getDisplayNameObservable();
