@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   title = 'app';
   isLoggedIn: boolean = false;
@@ -23,16 +23,19 @@ export class AppComponent implements OnInit {
 
   error: string = null;
 
-  updateCredentials() {
+  updateCredentials = async () => {
+    console.log("updateCredentials()");
     this.http.get('/auth/me').subscribe(
       (data) => {
         if (data["displayName"]) {
+          console.log("updateCredentials() succeeded");
           this.isLoggedIn = true;
           this.displayName = data["displayName"];
           this.displayImage = data["displayImage"];
         }
         else
         {
+          console.log("updateCredentials() failed");
           this.isLoggedIn = false;
           this.displayName = "";
           this.displayImage = "";
@@ -40,19 +43,6 @@ export class AppComponent implements OnInit {
       }
     )
     this.isLoggedIn = this.auth.isAuthenticated();
-    let credentials_string = localStorage.getItem('credentials');
-    if (credentials_string) {
-      let credentials = JSON.parse(credentials_string);
-      this.displayName = credentials.name;
-      this.displayImage = credentials.image;
-      this.loginType = credentials.login;
-    }
-    else
-    {
-      this.displayName = '';
-      this.displayImage = '';
-      this.loginType = '';
-    }
   }
 
   ngOnInit() {
@@ -62,37 +52,11 @@ export class AppComponent implements OnInit {
   doLogin() {
     var auth = `Basic ` + btoa(this.email + ":" + this.password);
     let headers = new HttpHeaders({ Authorization: auth });
-    this.http.post(`auth/login_email`, {}, {
+    this.http.post('auth/login_email', {}, {
       headers: headers
     }).subscribe((data) => {
-      this.isLoggedIn = true;
-      this.displayName = data["displayName"];
-      this.displayImage = '';
+      window.location.href = '/';
     });
-
-    //this.http.post(url, {}).subscribe((data) => {
-    //    if (data['token'])
-    //    {
-    //      this.auth.setToken(data['token']);
-    //      this.isLoggedIn = true;
-    //      localStorage.setItem('credentials', JSON.stringify(data['credentials']));
-    //      this.updateCredentials();
-    //    }
-    //    else if (data['error'])
-    //    {
-    //      console.log(data['error']);
-    //      this.error = `Login error: ${data['error']}`;
-    //    }
-    //    else
-    //    {
-    //      console.log(data);
-    //      this.error = `Login error: ${data.toString()}`;
-    //    }
-    //  },
-    //  (error) => {
-    //    console.log(error);
-    //    this.error = `Error: ${error}`;
-    //  });
   }
 
   doLogout() {
@@ -101,10 +65,11 @@ export class AppComponent implements OnInit {
     window.location.href = '/auth/logout';
   }
 
-  tryAuthorizedOnly = () => {
-    this.http.get('auth/me').subscribe((data) => {
-      alert(data);
-      this.error=`success ${data}`;
+  tryAuthorizedOnly = async () => {
+
+    this.http.get('/auth/me').subscribe((data) => {
+      alert(`Welcome ${data["displayName"]}`);
+      this.error=`success, accessed data for ${data["displayName"]}`;
       },
       (error) => {
         this.error = `error ${error}`;

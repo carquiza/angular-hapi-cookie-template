@@ -11,7 +11,7 @@
     <button (click)="doLogout()">Log out</button><br />
   </div>
   <div *ngIf="!isLoggedIn">
-    (valid username='aaa', password='a')<br />
+    (Any username/password will do)<br />
     Email: <input [(ngModel)]="email" type="email" /><br />
     Password: <input [(ngModel)]="password" type="password" /><br />
     <button (click)="doLogin()">Log in</button><br />

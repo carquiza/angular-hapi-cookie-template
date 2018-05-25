@@ -32,6 +32,7 @@ const init = async () => {
         password: process.env.COOKIE_PASSWORD,
         cookie: 'artoftech-cookie',
         isSecure: false,
+//        isSameSite: true,
         clearInvalid:true
     });
 
@@ -56,6 +57,9 @@ const init = async () => {
     });
 //    server.auth.strategy('artoftech-cookie', 'cookie', authCookieOptions);
 
+    server.bind({
+        session_lookup: []
+    });
     server.route(routes);
 
     await server.start();

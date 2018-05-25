@@ -55,8 +55,13 @@ module.exports = [
                 if (!request.auth.isAuthenticated) {
                     return 'Authentication failed: ' + request.auth.error.message;
                 }
-                const displayName = request.auth.credentials.displayName;
-                return { displayName: displayName };
+
+                const credentials = request.auth.credentials;
+                request.cookieAuth.set({
+                    provider: 'email',
+                    displayName: credentials.displayName
+                });
+                return h.response({});
             }
         }
     },
