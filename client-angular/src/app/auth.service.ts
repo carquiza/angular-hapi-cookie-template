@@ -1,31 +1,33 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-const TOKEN_STORAGE_NAME: string = 'token';
-const CREDENTIALS_STORAGE_NAME: string = 'credentials';
 
 @Injectable()
 export class AuthService {
 
-  public displayName: string = "";
+  constructor(private http:HttpClient) { }
 
-  constructor() { }
-
-  public getToken(): string {
-    return localStorage.getItem(TOKEN_STORAGE_NAME);
+  public doLogin(email, password) {
+    var auth = `Basic ` + btoa(email + ":" + password);
+    let headers = new HttpHeaders({ Authorization: auth });
+    this.http.post('auth/login_email', {}, {
+      headers: headers
+    }).subscribe((data) => {
+      window.location.href = '/';
+    });
   }
 
-  public setToken(token: string) {
-    localStorage.setItem(TOKEN_STORAGE_NAME, token);
+  public doFacebookLogin = () => {
+    var url = `auth/login_facebook`;
+    window.location.href = url;
   }
 
-  public clearToken() {
-    localStorage.removeItem(TOKEN_STORAGE_NAME);
-    localStorage.removeItem(CREDENTIALS_STORAGE_NAME);
-    this.displayName = "";
+  public doGoogleLogin = () => {
+    var url = `auth/login_google`;
+    window.location.href = url;
   }
 
-  public isAuthenticated(): boolean {
-    const token = this.getToken();
-    return token != null;
+  public doLogout() {
+    window.location.href = '/auth/logout';
   }
 }

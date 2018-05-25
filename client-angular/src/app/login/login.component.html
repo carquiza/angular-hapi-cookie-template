@@ -9,8 +9,8 @@
       </div>
       <div class="row">
         <div class="col">
-          <img height="32" (click)="doFacebookLogin()" src="assets/img/FacebookLogin.png" />
-          <img height="32" (click)="doFacebookLogin()" src="assets/img/GoogleLogin.png" />
+          <img height="32" (click)="auth.doFacebookLogin()" src="assets/img/FacebookLogin.png" />
+          <img height="32" (click)="auth.doFacebookLogin()" src="assets/img/GoogleLogin.png" />
           <!--<img height="32" src="assets/img/TwitterLogin.png" />-->
 
         </div>
@@ -22,7 +22,7 @@
           <mat-form-field>
             Password: <input matInput [(ngModel)]="password" type="password" /><br />
           </mat-form-field>
-          <button mat-button (click)="doLogin()">Log in</button><br />
+          <button mat-button (click)="auth.doLogin(email, password)">Log in</button><br />
         </div>
       </div>
     </div>
