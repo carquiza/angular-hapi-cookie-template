@@ -10,6 +10,10 @@ export class AuthService {
   displayName: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   displayImage: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
+  public getIsLoggedInObservable() {
+    return this.isLoggedIn.asObservable();
+  }
+
   public getDisplayNameObservable() {
     return this.displayName.asObservable();
   }

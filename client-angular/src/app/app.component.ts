@@ -10,10 +10,12 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
+  isLoggedIn: Observable<boolean>;
   displayName: Observable<string>;
   displayImage: Observable<string>;
 
   constructor(private auth: AuthService) {
+    this.isLoggedIn = auth.getIsLoggedInObservable();
     this.displayName = auth.getDisplayNameObservable();
     this.displayImage = auth.getDisplayImageObservable();
   }
