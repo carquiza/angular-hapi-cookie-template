@@ -20,9 +20,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
-    <Content Include=".angular-cli.json" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Content Include="src\app\login\login.component.css" />
+    <Content Include="src\app\login\login.component.html" />
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
     <Content Include="README.md" />
@@ -38,6 +39,8 @@
     <Content Include="src\tsconfig.spec.json" />
     <TypeScriptCompile Include="src\app\auth.service.spec.ts" />
     <TypeScriptCompile Include="src\app\auth.service.ts" />
+    <TypeScriptCompile Include="src\app\login\login.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\login\login.component.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
     <TypeScriptCompile Include="src\test.ts" />
@@ -55,6 +58,7 @@
     <Folder Include="e2e" />
     <Folder Include="src" />
     <Folder Include="src\app" />
+    <Folder Include="src\app\login\" />
     <Folder Include="src\assets" />
     <Folder Include="src\environments" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
-import { environment } from '../environments/environment';  
+import { environment } from '../environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +10,17 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private auth: AuthService) {}
+  displayName: Observable<string>;
+  displyImage: Observable<string>;
+
+  constructor(private auth: AuthService) {
+    this.displayName = auth.getDisplayNameObservable();
+    this.displayImage = auth.getDisplayImageObservable();
+  }
+
 
   title = 'app';
-  isLoggedIn: boolean = false;
-  email: string = '';
-  password: string = '';
 
-  displayName: string = '';
-  displayImage: string = '';
   loginType: string = '';
 
   error: string = null;

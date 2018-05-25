@@ -7,12 +7,15 @@
 
 </app-login>
 
+    Auth Test: {{displayName | async}}<br />
+    <img src="{{displayImage | async}}" style="height:30px"><br />
+
 <div style="text-align:left">
 
   <div *ngIf="isLoggedIn">
     Login: {{loginType}}<br />
-    Hello: {{displayName}}<br />
-    <img src="{{displayImage}}" style="height:30px"><br />
+    Hello: {{(auth.Test)}}<br />
+    <img src="{{(auth.Test)}}" style="height:30px"><br />
     <button (click)="doLogout()">Log out</button><br />
   </div>
   <div *ngIf="!isLoggedIn">

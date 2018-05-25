@@ -2,9 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { AuthService } from './auth.service';
 import { AppComponent } from './app.component';
@@ -20,8 +19,8 @@ import { LoginComponent } from './login/login.component';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    AngularFontAwesomeModule,
 
+    BrowserAnimationsModule,
     MatButtonModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule
   ],
   providers: [
