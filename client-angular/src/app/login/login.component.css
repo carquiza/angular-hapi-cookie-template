@@ -1,4 +1,4 @@
-.card
+/*.card-x
 {
   position:relative;
   border-radius:5px;
@@ -6,10 +6,14 @@
 
   align-content: center;
   width: 600px;
-}
+}*/
 
 .title
 {
-  font-weight: bolder;
+  font-size: xx-large;
+}
+
+.page-title
+{
   font-size: xx-large;
 }

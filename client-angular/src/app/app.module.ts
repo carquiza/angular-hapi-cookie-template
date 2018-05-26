@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconModule, MatMenuModule, MatToolbarModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatDividerModule, MatIconModule, MatMenuModule, MatToolbarModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 import { AuthService } from './auth.service';
 import { AppComponent } from './app.component';
@@ -14,6 +14,7 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { UsersComponent } from './users/users.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { UsersComponent } from './users/users.component';
     LoginComponent,
     AppNavbarComponent,
     DashboardComponent,
-    UsersComponent
+    UsersComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { UsersComponent } from './users/users.component';
     FlexLayoutModule,
 
     BrowserAnimationsModule,
-    MatIconModule, MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule,
+    MatDividerModule, MatIconModule, MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule,
 
     AppRoutingModule
   ],

@@ -4,13 +4,13 @@
   </mat-card-header>
   <mat-card-content>
     <div class="container">
-      <div class="row">
-
+      <div class="row" style="padding-bottom:20px">
+        <mat-divider></mat-divider>
       </div>
       <div class="row">
-        <div class="col">
-          <img height="32" (click)="auth.doFacebookLogin()" src="assets/img/FacebookLogin.png" />
-          <img height="32" (click)="auth.doGoogleLogin()" src="assets/img/GoogleLogin.png" />
+        <div fxLayout="row" fxLayoutGap="20px">
+          <img height="32" style="padding:3px" (click)="auth.doFacebookLogin()" src="assets/img/FacebookLogin.png" />
+          <img height="36" (click)="auth.doGoogleLogin()" src="assets/img/GoogleLogin.png" />
           <!--<img height="32" src="assets/img/TwitterLogin.png" />-->
 
         </div>
@@ -26,7 +26,7 @@
         </div>
         <div fxLayout="row" fxLayoutGap="20px">
           <button mat-stroked-button (click)="auth.doLogin(email, password)">Log in</button>
-          <button mat-stroked-button (click)="auth.doLogin(email, password)">Register new account</button>
+          <button mat-stroked-button routerLink="/register">Register new account</button>
         </div>
       </div>
     </div>

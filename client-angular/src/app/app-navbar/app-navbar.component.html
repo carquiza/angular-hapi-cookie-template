@@ -1,5 +1,5 @@
 <div>
-  <mat-toolbar color="primary" fxLayout="row" fxLayoutGap="50px">
+  <mat-toolbar color="primary" fxLayout="row">
     <div style="padding-top:7px"><mat-icon>home</mat-icon></div>
 
     <span class="app-title">App</span>
@@ -7,6 +7,7 @@
     <button *ngIf="isLoggedIn | async" mat-button routerLink="/dashboard">Dashboard</button>
 
     <span class="fill-space"></span>
+    <button *ngIf="!(isLoggedIn | async)" mat-button routerLink="/register">Register new account</button>
     <button *ngIf="!(isLoggedIn | async)" mat-button routerLink="/login">Login</button>
     <img height="30" *ngIf="isLoggedIn | async" src="{{displayImage| async}}" />
     <button *ngIf="isLoggedIn | async" mat-button (click)="auth.doLogout()">Log out</button>
@@ -16,6 +17,7 @@
     </button>
   </mat-toolbar>
   <mat-menu x-position="before" #menu="matMenu">
+    <button *ngIf="!(isLoggedIn | async)" routerLink="/register" mat-menu-item>Register new account</button>
     <button *ngIf="!(isLoggedIn | async)" routerLink="/login" mat-menu-item>Login</button>
     <button *ngIf="isLoggedIn | async" mat-menu-item>My profile</button>
     <button *ngIf="isLoggedIn | async" mat-menu-item>Admin</button>
