@@ -25,7 +25,7 @@ module.exports = [
                 };
                 return {
                     displayName: request.auth.credentials.displayName,
-                    displayImage: displayImage
+                    displayImage: 'assets/img/account_circle.png'
                 }
             }
             else
@@ -61,7 +61,7 @@ module.exports = [
                 const credentials = request.auth.credentials;
                 request.cookieAuth.set({
                     provider: 'email',
-                    displayName: credentials.displayName
+                    displayName: credentials.displayName,
                 });
                 return h.response({});
             }

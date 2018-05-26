@@ -4,6 +4,7 @@ exports.up = function (knex, Promise) {
         .schema
         .createTable('users', function (usersTable) {
             usersTable.string('guid', 50).notNullable().primary();
+            usersTable.integer('loginTypes');
 
             usersTable.string('name', 50);
             usersTable.timestamp('created_at').notNullable();

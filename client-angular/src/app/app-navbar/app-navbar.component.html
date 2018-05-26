@@ -9,7 +9,6 @@
     <span class="fill-space"></span>
     <button *ngIf="!(isLoggedIn | async)" mat-button routerLink="/login">Login</button>
     <img height="30" *ngIf="isLoggedIn | async" src="{{displayImage| async}}" />
-    <span class="display-name" *ngIf="isLoggedIn | async">{{displayName| async}}</span>
     <button *ngIf="isLoggedIn | async" mat-button (click)="auth.doLogout()">Log out</button>
 
     <button mat-icon-button [mat-menu-trigger-for]="menu">
