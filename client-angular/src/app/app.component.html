@@ -1,26 +1,7 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar>
-  <span>App</span>
-</mat-toolbar>
-
-<app-login *ngIf="!(isLoggedIn | async)">
-
-</app-login>
-
-<div style="text-align:left">
-
-  <div *ngIf="isLoggedIn  | async">
-    Hello: {{displayName | async}}<br />
-    <img src="{{displayImage | async}}" style="height:30px"><br />
-
-    <button (click)="auth.doLogout()">Log out</button><br />
-  </div>
-  <div *ngIf="!(isLoggedIn | async)">
-    (Any username/password will do)<br />
-  </div>
-
-  <button (click)="tryAuthorizedOnly()">Try authorized page</button><br />
-
-  <div *ngIf="error">Result: {{error}}<br /></div>
+<app-navbar></app-navbar>
+<div>
+  <router-outlet></router-outlet>
 </div>
-
+<div>
+  <router-outlet name="message_outlet"></router-outlet>
+</div>

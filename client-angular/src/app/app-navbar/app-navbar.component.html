@@ -1,0 +1,23 @@
+<div>
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutGap="50px">
+    <span><mat-icon>home</mat-icon></span>
+
+    <span>App</span>
+
+    <button *ngIf="isLoggedIn | async" mat-button routerLink="/dashboard">Dashboard</button>
+
+    <span class="fill-space"></span>
+    <button *ngIf="!(isLoggedIn | async)" mat-button routerLink="/login">Login</button>
+    <img height="30" *ngIf="isLoggedIn | async" src="{{displayImage| async}}" />
+    <span *ngIf="isLoggedIn | async">{{displayName| async}}</span>
+    <button *ngIf="isLoggedIn | async" mat-button (click)="auth.doLogout()">Log out</button>
+
+    <button mat-icon-button [mat-menu-trigger-for]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-menu x-position="before" #menu="matMenu">
+    <button mat-menu-item>Option 1</button>
+    <button mat-menu-item>Option 2</button>
+  </mat-menu>
+</div>

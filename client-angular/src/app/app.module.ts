@@ -3,17 +3,22 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatIconModule, MatMenuModule, MatToolbarModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 import { AuthService } from './auth.service';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
+import { AppNavbarComponent } from './app-navbar/app-navbar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    AppNavbarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +26,9 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
 
     BrowserAnimationsModule,
-    MatButtonModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule
+    MatIconModule, MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule,
+
+    AppRoutingModule
   ],
   providers: [
     AuthService

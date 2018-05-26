@@ -22,6 +22,8 @@
   <ItemGroup>
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Content Include="src\app\app-navbar\app-navbar.component.css" />
+    <Content Include="src\app\app-navbar\app-navbar.component.html" />
     <Content Include="src\app\login\login.component.css" />
     <Content Include="src\app\login\login.component.html" />
     <Content Include="tsconfig.json" />
@@ -37,6 +39,10 @@
     <Content Include="src\favicon.ico" />
     <Content Include="src\tsconfig.app.json" />
     <Content Include="src\tsconfig.spec.json" />
+    <TypeScriptCompile Include="src\app\app-navbar\app-navbar.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\app-navbar\app-navbar.component.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.spec.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\auth.service.spec.ts" />
     <TypeScriptCompile Include="src\app\auth.service.ts" />
     <TypeScriptCompile Include="src\app\login\login.component.spec.ts" />
@@ -58,6 +64,7 @@
     <Folder Include="e2e" />
     <Folder Include="src" />
     <Folder Include="src\app" />
+    <Folder Include="src\app\app-navbar\" />
     <Folder Include="src\app\login\" />
     <Folder Include="src\assets" />
     <Folder Include="src\environments" />
