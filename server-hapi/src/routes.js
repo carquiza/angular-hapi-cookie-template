@@ -22,10 +22,14 @@ module.exports = [
                 else if (request.auth.credentials.provider == 'google')
                 {
                     displayImage = request.auth.credentials.displayImage;
-                };
+                }
+                else
+                {
+                    displayImage = 'assets/img/account_circle.png';
+                }
                 return {
                     displayName: request.auth.credentials.displayName,
-                    displayImage: 'assets/img/account_circle.png'
+                    displayImage: displayImage
                 }
             }
             else

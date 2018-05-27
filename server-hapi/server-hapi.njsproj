@@ -32,12 +32,6 @@
   <ItemGroup>
     <Compile Include="knexfile.js" />
     <Compile Include="migrations\20180525144106_Users.js" />
-    <Compile Include="src\auth\auth_facebook.js">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="src\auth\auth_local.js">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="src\routes.js" />
     <Compile Include="src\server.js">
       <SubType>Code</SubType>

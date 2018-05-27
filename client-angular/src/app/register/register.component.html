@@ -1,3 +1,27 @@
-<p>
-  register works!
-</p>
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title class="title">Register a new account</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="container">
+      <div class="row" style="padding-bottom:20px">
+        <mat-divider></mat-divider>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field>
+            Email: <input matInput [(ngModel)]="email" type="email" /><br />
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field>
+            Password: <input matInput [(ngModel)]="password" type="password" /><br />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <button mat-stroked-button routerLink="/register">Create a new account</button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
