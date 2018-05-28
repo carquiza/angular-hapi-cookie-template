@@ -4,17 +4,34 @@ const Hapi = require('hapi');
 const AuthCookie = require('hapi-auth-cookie');
 const Bell = require('bell');
 const AuthBasic = require('hapi-auth-basic');
+const db = require('./db');
+const bcrypt = require('bcrypt');
 
 const routes = require('./routes');
 
-const validate = async (request, username, password, h) => {
-    return {
-        isValid: true,
-        credentials:
-        {
-            displayName: username
+const validate = async (request, email, password, h) => {
+    try {
+        var res = await db.select('guid', 'password').where('email', email).from('login_email');
+        if (res.length == 0) {
+            return { isValid: false }
         }
-    };
+        if (await bcrypt.compare(password, res[0].password)) {
+            return {
+                isValid: true,
+                credentials:
+                {
+                    displayName: email
+                }
+            };
+        }
+        else {
+            return { isValid: false };
+        }
+    }
+    catch (error)
+    {
+        console.log(error);
+    }
 }
 
 const init = async () => {
