@@ -13,8 +13,7 @@ exports.up = function (knex, Promise) {
             loginEmailTable.string('guid').references('guid').inTable('users');
 
             loginEmailTable.string('email', 50).notNullable().unique();
-            loginEmailTable.string('password', 50).notNullable();
-            loginEmailTable.string('salt', 50);
+            loginEmailTable.string('password', 100).notNullable();
             loginEmailTable.timestamp('created_at').notNullable();
 
             loginEmailTable.index('email');

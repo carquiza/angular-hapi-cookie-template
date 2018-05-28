@@ -1,4 +1,8 @@
 const axios = require('axios');
+const isemail = require('isemail');
+const db = require('./db');
+const bcrypt = require('bcrypt');
+const uuidv4 = require('uuid/v4');
 
 module.exports = [
     {
@@ -47,6 +51,47 @@ module.exports = [
             handler: function (request, h) {
                 request.cookieAuth.clear();
                 return h.redirect('/');
+            }
+        }
+    },
+    {
+        method: 'POST',
+        path: '/auth/register_email',
+        options: { auth: false },
+        handler: async function (request, h) {
+            let payload = request.payload;
+            let email = payload.email;
+            let password = payload.password;
+            if (!isemail.validate(email))
+            {
+                return h.response({ error: "Invalid email" });
+            }
+            if (password.length < 7)
+            {
+                return h.response({error:"Password should be at least 7 characters long."})
+            }
+            // Try-create email/password combination
+            try {
+                let trx = db.transaction();
+                var guid = uuidv4();
+                var res = await db.select('guid').where('email', email).from('login_email').transacting(trx);
+                if (res.length != 0)
+                {
+                    trx.rollback();
+                    return h.response({ error: 'Email already registered.' });
+                }
+
+                var hashed_password = await bcrypt.hash(password, 10);
+                var now = db.fn.now();
+                res = await db.insert({ guid: guid, loginTypes: 1, name: email, created_at: now }).into('users').transacting(trx);
+                res = await db.insert({ guid: guid, email: email, password: hashed_password, created_at: now }).into('login_email').transacting(trx);
+
+                await trx.commit();
+                return h.response({ guid: guid });
+            }
+            catch (error)
+            {
+                await t.rollback();
             }
         }
     },
