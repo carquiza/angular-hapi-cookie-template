@@ -1,31 +1,67 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
-const TOKEN_STORAGE_NAME: string = 'token';
-const CREDENTIALS_STORAGE_NAME: string = 'credentials';
 
 @Injectable()
 export class AuthService {
 
-  public displayName: string = "";
+  isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  displayName: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  displayImage: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor() { }
-
-  public getToken(): string {
-    return localStorage.getItem(TOKEN_STORAGE_NAME);
+  public getIsLoggedInObservable() {
+    return this.isLoggedIn.asObservable();
   }
 
-  public setToken(token: string) {
-    localStorage.setItem(TOKEN_STORAGE_NAME, token);
+  public getDisplayNameObservable() {
+    return this.displayName.asObservable();
   }
 
-  public clearToken() {
-    localStorage.removeItem(TOKEN_STORAGE_NAME);
-    localStorage.removeItem(CREDENTIALS_STORAGE_NAME);
-    this.displayName = "";
+  public getDisplayImageObservable() {
+    return this.displayImage.asObservable();
+  }
+  
+  constructor(private http: HttpClient) {
+    this.updateCredentials();
   }
 
-  public isAuthenticated(): boolean {
-    const token = this.getToken();
-    return token != null;
+  updateCredentials() {
+    this.http.get('auth/me').subscribe((data) => {
+      this.isLoggedIn.next(true);
+      console.log(data);
+      this.displayName.next(data["displayName"]);
+      this.displayImage.next(data["displayImage"]);
+    },
+    (error) => {
+      this.isLoggedIn.next(false);
+      this.displayName.next(null);
+      this.displayImage.next(null);
+    });
+  }
+
+  public doLogin(email, password) {
+    var auth = `Basic ` + btoa(email + ":" + password);
+    let headers = new HttpHeaders({ Authorization: auth });
+    this.http.post('auth/login_email', {}, {
+      headers: headers
+    }).subscribe((data) => {
+      this.isLoggedIn.next(true);
+      window.location.href = '/';
+    });
+  }
+
+  public doFacebookLogin = () => {
+    var url = `auth/login_facebook`;
+    window.location.href = url;
+  }
+
+  public doGoogleLogin = () => {
+    var url = `auth/login_google`;
+    window.location.href = url;
+  }
+
+  public doLogout() {
+    window.location.href = '/auth/logout';
   }
 }

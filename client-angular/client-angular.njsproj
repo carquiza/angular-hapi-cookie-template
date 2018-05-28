@@ -20,9 +20,22 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
-    <Content Include=".angular-cli.json" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Content Include="src\app\app-navbar\app-navbar.component.css" />
+    <Content Include="src\app\app-navbar\app-navbar.component.html" />
+    <Content Include="src\app\dashboard\dashboard.component.css" />
+    <Content Include="src\app\dashboard\dashboard.component.html" />
+    <Content Include="src\app\login\login.component.css" />
+    <Content Include="src\app\login\login.component.html" />
+    <Content Include="src\app\register\register.component.css" />
+    <Content Include="src\app\register\register.component.html" />
+    <Content Include="src\app\users\users.component.css" />
+    <Content Include="src\app\users\users.component.html" />
+    <Content Include="src\assets\img\account_circle.png" />
+    <Content Include="src\assets\img\FacebookLogin.png" />
+    <Content Include="src\assets\img\GoogleLogin.png" />
+    <Content Include="src\assets\img\TwitterLogin.png" />
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
     <Content Include="README.md" />
@@ -36,8 +49,20 @@
     <Content Include="src\favicon.ico" />
     <Content Include="src\tsconfig.app.json" />
     <Content Include="src\tsconfig.spec.json" />
+    <TypeScriptCompile Include="src\app\app-navbar\app-navbar.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\app-navbar\app-navbar.component.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.spec.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\auth.service.spec.ts" />
     <TypeScriptCompile Include="src\app\auth.service.ts" />
+    <TypeScriptCompile Include="src\app\dashboard\dashboard.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\dashboard\dashboard.component.ts" />
+    <TypeScriptCompile Include="src\app\login\login.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\login\login.component.ts" />
+    <TypeScriptCompile Include="src\app\register\register.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\register\register.component.ts" />
+    <TypeScriptCompile Include="src\app\users\users.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\users\users.component.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
     <TypeScriptCompile Include="src\test.ts" />
@@ -55,7 +80,13 @@
     <Folder Include="e2e" />
     <Folder Include="src" />
     <Folder Include="src\app" />
+    <Folder Include="src\app\app-navbar\" />
+    <Folder Include="src\app\dashboard\" />
+    <Folder Include="src\app\login\" />
+    <Folder Include="src\app\register\" />
+    <Folder Include="src\app\users\" />
     <Folder Include="src\assets" />
+    <Folder Include="src\assets\img\" />
     <Folder Include="src\environments" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

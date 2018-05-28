@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.fill-space {
+  flex: 1 1 auto;
+}
+
+.title {
+  font-size: xx-large;
+}
+
+.page-title {
+  font-size: xx-large;
+}

@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 module.exports = [
     {
         method: "GET", path: "/",
@@ -19,8 +21,12 @@ module.exports = [
                 }
                 else if (request.auth.credentials.provider == 'google')
                 {
-                    displayImage = 'http://lh6.ggpht.com/-btLsReiDeF0/AAAAAAAAAAI/AAAAAAAAAAA/GXBpycNk984/s64-c/filename.jpg';
-                };
+                    displayImage = request.auth.credentials.displayImage;
+                }
+                else
+                {
+                    displayImage = 'assets/img/account_circle.png';
+                }
                 return {
                     displayName: request.auth.credentials.displayName,
                     displayImage: displayImage
@@ -59,7 +65,7 @@ module.exports = [
                 const credentials = request.auth.credentials;
                 request.cookieAuth.set({
                     provider: 'email',
-                    displayName: credentials.displayName
+                    displayName: credentials.displayName,
                 });
                 return h.response({});
             }
@@ -100,11 +106,13 @@ module.exports = [
                     return 'Authentication failed: ' + request.auth.error.message;
                 }
 
+                console.log(JSON.stringify(request.auth.credentials));
                 const profile = request.auth.credentials.profile;
                 request.cookieAuth.set({
                     provider: 'google',
                     googleId: profile.id,
-                    displayName: profile.displayName
+                    displayName: profile.displayName,
+                    displayImage: profile.raw.picture
                 });
                 return h.redirect('/');
             }
