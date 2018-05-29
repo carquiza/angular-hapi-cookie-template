@@ -7,14 +7,14 @@ exports.up = function (knex, Promise) {
             usersTable.integer('loginTypes');
 
             usersTable.string('name', 50);
-            usersTable.timestamp('created_at').notNullable();
+            usersTable.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
         })
         .createTable('login_email', function (loginEmailTable) {
             loginEmailTable.string('guid').references('guid').inTable('users');
 
             loginEmailTable.string('email', 50).notNullable().unique();
             loginEmailTable.string('password', 100).notNullable();
-            loginEmailTable.timestamp('created_at').notNullable();
+            loginEmailTable.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 
             loginEmailTable.index('email');
         })
@@ -26,7 +26,7 @@ exports.up = function (knex, Promise) {
             loginFacebookTable.string('facebook_id').notNullable().unique();
             loginFacebookTable.string('access_token');
             loginFacebookTable.dateTime('access_token_expires_at');
-            loginFacebookTable.timestamp('created_at').notNullable();
+            loginFacebookTable.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 
             loginFacebookTable.index('facebook_id');
         })
@@ -38,7 +38,7 @@ exports.up = function (knex, Promise) {
             loginGoogleTable.string('google_id').notNullable().unique();
             loginGoogleTable.string('access_token');
             loginGoogleTable.dateTime('access_token_expires_at');
-            loginGoogleTable.timestamp('created_at').notNullable();
+            loginGoogleTable.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
 
             loginGoogleTable.index('google_id');
         })

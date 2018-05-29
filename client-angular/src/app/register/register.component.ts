@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  public email: string = "":
+  public email: string = "";
   public password: string = "";
   public password2: string = "";
 

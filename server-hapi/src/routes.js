@@ -125,15 +125,52 @@ module.exports = [
                 strategy: 'facebook',
                 mode: 'try'
             },
-            handler: function (request, h) {
+            handler: async function (request, h) {
                 if (!request.auth.isAuthenticated) {
                     return 'Authentication failed: '+request.auth.error.message;
                 }
 
                 const profile = request.auth.credentials.profile;
+
+                try {
+                    let trx = db.transaction();
+                    var guid = uuidv4();
+                    var res = await db.select('guid').where('facebook_id', profile.id).from('login_facebook').transacting(trx);
+
+                    let expiryInMS = request.auth.credentials.expiresIn * 1000;
+                    let expiryDate = new Date((new Date()).getTime() + expiryInMS);
+
+                    if (res.length == 0) {
+                            var now = db.fn.now();
+                            res = await db.insert({
+                            guid: guid,
+                            loginTypes: 2,
+                            name: profile.displayName,
+                            created_at: now
+                        }).into('users').transacting(trx);
+                        res = await db.insert({
+                            guid: guid,
+                            name: profile.displayName,
+                            email: profile.email,
+                            facebook_id: profile.id,
+                            access_token: request.auth.credentials.token,
+                            access_token_expires_at: expiryDate,
+                            created_at: now
+                        }).into('login_facebook').transacting(trx);
+                    }
+
+                    await trx.commit();
+                    return h.response({ guid: guid });
+                }
+                catch (error) {
+                    await t.rollback();
+                }
+
                 request.cookieAuth.set({
                     provider: 'facebook',
-                    facebookId: profile.id,             displayName: profile.displayName
+                    facebookId: profile.id,
+                    displayName: profile.displayName,
+                    displayImage: profile.picture.data.url,
                 });
                 return h.redirect('/');
             }
