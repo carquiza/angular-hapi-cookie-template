@@ -101,6 +101,7 @@ module.exports = [
         options: {
             auth: {
                 strategy: 'simple',
+                mode: 'try'
             },
             handler: function (request, h) {
                 if (!request.auth.isAuthenticated) {
