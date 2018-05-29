@@ -10,14 +10,14 @@ module.exports = [
     {
         method: "GET", path: "/",
         options: { auth: false },
-        handler: function (request, h) {
+        handler: (request, h) => {
             return { text: 'Token not required' };
         }
     },
     {
         method: '*', path: '/auth/me',
         options: { auth: 'session' },
-        handler: function (request, h) {
+        handler: (request, h) => {
             if (request.auth.isAuthenticated)
             {
                 let displayImage = '';
@@ -50,7 +50,7 @@ module.exports = [
         path: '/auth/logout',
         options: {
             auth: false,
-            handler: function (request, h) {
+            handler: (request, h) => {
                 request.cookieAuth.clear();
                 return h.redirect('/');
             }
@@ -105,7 +105,7 @@ module.exports = [
                 strategy: 'simple',
                 mode: 'try'
             },
-            handler: function (request, h) {
+            handler: (request, h) => {
                 if (!request.auth.isAuthenticated) {
                     return 'Authentication failed: ' + request.auth.error.message;
                 }
@@ -127,7 +127,7 @@ module.exports = [
                 strategy: 'facebook',
                 mode: 'try'
             },
-            handler: async function (request, h) {
+            handler: async (request, h) => {
                 if (!request.auth.isAuthenticated) {
                     return 'Authentication failed: '+request.auth.error.message;
                 }
@@ -186,7 +186,7 @@ module.exports = [
                 strategy: 'google',
                 mode: 'try'
             },
-            handler: function (request, h) {
+            handler: (request, h) => {
                 if (!request.auth.isAuthenticated) {
                     return 'Authentication failed: ' + request.auth.error.message;
                 }

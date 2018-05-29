@@ -13,7 +13,7 @@ const routes = require('./routes');
 
 const validate = async (request, email, password, h) => {
     try {
-        var res = await db.select('guid', 'password').where('email', email).from('login_email');
+        let res = await db.select('guid', 'password').where('email', email).from('login_email');
         if (res.length == 0) {
             return { isValid: false }
         }
