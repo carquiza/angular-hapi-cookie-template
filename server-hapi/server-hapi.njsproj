@@ -28,6 +28,7 @@
     <Folder Include="src\" />
     <Folder Include="src\controllers\" />
     <Folder Include="src\auth\" />
+    <Folder Include="src\routes\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="knexfile.js" />

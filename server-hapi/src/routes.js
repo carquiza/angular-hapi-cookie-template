@@ -1,3 +1,5 @@
+"use strict";
+
 const axios = require('axios');
 const isemail = require('isemail');
 const db = require('./db');
@@ -18,7 +20,7 @@ module.exports = [
         handler: function (request, h) {
             if (request.auth.isAuthenticated)
             {
-                var displayImage = '';
+                let displayImage = '';
                 if (request.auth.credentials.provider == 'facebook')
                 {
                     displayImage = `http://graph.facebook.com/${request.auth.credentials.facebookId}/picture?type=square`;
@@ -59,9 +61,9 @@ module.exports = [
         path: '/auth/register_email',
         options: { auth: false },
         handler: async function (request, h) {
-            let payload = request.payload;
-            let email = payload.email;
-            let password = payload.password;
+            const payload = request.payload;
+            const email = payload.email;
+            const password = payload.password;
             if (!isemail.validate(email))
             {
                 return h.response({ error: "Invalid email" });
@@ -72,17 +74,17 @@ module.exports = [
             }
             // Try-create email/password combination
             try {
-                let trx = db.transaction();
-                var guid = uuidv4();
-                var res = await db.select('guid').where('email', email).from('login_email').transacting(trx);
+                const trx = db.transaction();
+                const guid = uuidv4();
+                let res = await db.select('guid').where('email', email).from('login_email').transacting(trx);
                 if (res.length != 0)
                 {
                     trx.rollback();
                     return h.response({ error: 'Email already registered.' });
                 }
 
-                var hashed_password = await bcrypt.hash(password, 10);
-                var now = db.fn.now();
+                const hashed_password = await bcrypt.hash(password, 10);
+                const now = db.fn.now();
                 res = await db.insert({ guid: guid, loginTypes: 1, name: email, created_at: now }).into('users').transacting(trx);
                 res = await db.insert({ guid: guid, email: email, password: hashed_password, created_at: now }).into('login_email').transacting(trx);
 
@@ -133,30 +135,30 @@ module.exports = [
                 const profile = request.auth.credentials.profile;
 
                 try {
-                    let trx = db.transaction();
-                    var guid = uuidv4();
-                    var res = await db.select('guid').where('facebook_id', profile.id).from('login_facebook').transacting(trx);
+                    const trx = db.transaction();
+                    const guid = uuidv4();
+                    let res = await db.select('guid').where('facebook_id', profile.id).from('login_facebook').transacting(trx);
 
-                    let expiryInMS = request.auth.credentials.expiresIn * 1000;
-                    let expiryDate = new Date((new Date()).getTime() + expiryInMS);
+                    const expiryInMS = request.auth.credentials.expiresIn * 1000;
+                    const expiryDate = new Date((new Date()).getTime() + expiryInMS);
 
                     if (res.length == 0) {
-                            var now = db.fn.now();
-                            res = await db.insert({
-                            guid: guid,
-                            loginTypes: 2,
-                            name: profile.displayName,
-                            created_at: now
-                        }).into('users').transacting(trx);
+                        const now = db.fn.now();
                         res = await db.insert({
-                            guid: guid,
-                            name: profile.displayName,
-                            email: profile.email,
-                            facebook_id: profile.id,
-                            access_token: request.auth.credentials.token,
-                            access_token_expires_at: expiryDate,
-                            created_at: now
-                        }).into('login_facebook').transacting(trx);
+                        guid: guid,
+                        loginTypes: 2,
+                        name: profile.displayName,
+                        created_at: now
+                    }).into('users').transacting(trx);
+                    res = await db.insert({
+                        guid: guid,
+                        name: profile.displayName,
+                        email: profile.email,
+                        facebook_id: profile.id,
+                        access_token: request.auth.credentials.token,
+                        access_token_expires_at: expiryDate,
+                        created_at: now
+                    }).into('login_facebook').transacting(trx);
                     }
 
                     await trx.commit();

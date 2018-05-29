@@ -1,4 +1,6 @@
-﻿require('dotenv').config();
+﻿"use strict";
+
+require('dotenv').config();
 
 const Hapi = require('hapi');
 const AuthCookie = require('hapi-auth-cookie');
