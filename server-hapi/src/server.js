@@ -6,18 +6,18 @@ const Hapi = require('hapi');
 const AuthCookie = require('hapi-auth-cookie');
 const Bell = require('bell');
 const AuthBasic = require('hapi-auth-basic');
-const db = require('./db');
-const bcrypt = require('bcrypt');
+const Db = require('./db');
+const Bcrypt = require('bcrypt');
 
 const routes = require('./routes');
 
 const validate = async (request, email, password, h) => {
     try {
-        let res = await db.select('guid', 'password').where('email', email).from('login_email');
+        let res = await Db.select('guid', 'password').where('email', email).from('login_email');
         if (res.length == 0) {
             return { isValid: false }
         }
-        if (await bcrypt.compare(password, res[0].password)) {
+        if (await Bcrypt.compare(password, res[0].password)) {
             return {
                 isValid: true,
                 credentials:
@@ -40,6 +40,12 @@ const init = async () => {
     const server = Hapi.Server({ port: 3030 });
     try {
         await server.register([AuthCookie, Bell, AuthBasic]);
+        await server.register({
+            plugin: require('./lib/users'),
+            options: {
+                myOptions: 'my verification text'
+            }
+        });
     }
     catch (err)
     {

@@ -1,7 +1,8 @@
 "use strict";
 
-const config = require('../knexfile');
+const Knexfile = require('../knexfile');
+const Knex = require('knex');
 
-module.exports = require('knex')(
-    config['development']
+module.exports = Knex(
+    Knexfile['development']
 );
