@@ -9,8 +9,6 @@ const AuthBasic = require('hapi-auth-basic');
 const Db = require('./db');
 const Bcrypt = require('bcrypt');
 
-const routes = require('./routes');
-
 const validate = async (request, email, password, h) => {
     try {
         let res = await Db.select('guid', 'password').where('email', email).from('login_email');
@@ -40,12 +38,6 @@ const init = async () => {
     const server = Hapi.Server({ port: 3030 });
     try {
         await server.register([AuthCookie, Bell, AuthBasic]);
-        await server.register({
-            plugin: require('./lib/users'),
-            options: {
-                myOptions: 'my verification text'
-            }
-        });
     }
     catch (err)
     {
@@ -82,10 +74,24 @@ const init = async () => {
     });
 //    server.auth.strategy('artoftech-cookie', 'cookie', authCookieOptions);
 
+    // This should be registered only after all auth strategies are configured
+    try {
+        await server.register({
+            plugin: require('./lib/users'),
+            options: {
+                knex: Db
+            }
+        });
+    }
+    catch (err)
+    {
+        console.error(err);
+        process.exit(1);
+    }
+
     server.bind({
         session_lookup: []
     });
-    server.route(routes);
 
     await server.start();
     return server;
