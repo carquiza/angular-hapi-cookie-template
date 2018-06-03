@@ -40,10 +40,14 @@ export class RegisterComponent implements OnInit {
     };
     try
     {
-      await this.auth.doRegisterEmail(this.email, this.password);
+      var res = await this.auth.doRegisterEmail(this.email, this.password);
+      console.log("RES");
+      console.log(res);
+      alert(res);
     }
     catch (error)
     {
+      console.log("ERROR");
       console.log(error);
       alert(error.error);
     }

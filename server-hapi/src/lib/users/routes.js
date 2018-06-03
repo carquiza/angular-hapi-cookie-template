@@ -5,8 +5,12 @@ const Isemail = require('isemail');
 const Bcrypt = require('bcrypt');
 const Uuidv4 = require('uuid/v4');
 
-const addFacebookUser = () => {
+const getCookie = (request) => {
+    if (request.state.session) return request.state.session;
 
+    return {
+        isAuthenticated: false
+    };
 }
 
 module.exports = (options) => {
@@ -66,6 +70,7 @@ module.exports = (options) => {
                 const payload = request.payload;
                 const email = payload.email;
                 const password = payload.password;
+                let ret_error = "";
                 if (!Isemail.validate(email)) {
                     return h.response({ error: "Invalid email" });
                 }
@@ -90,15 +95,15 @@ module.exports = (options) => {
 
                         success = true;
                         //                    await trx.commit();
-                        //                    return h.response({ guid: guid });
+                        return h.response({ redirect: "/" });
                     });
                 }
                 catch (error) {
                     //                await t.rollback();
-                    return h.response({ error: error });
+                    return h.response({ error: error.message });
 //                    console.log(error);
                 }
-                console.log(success);
+//                console.log(success);
             }
         },
         {
@@ -109,16 +114,22 @@ module.exports = (options) => {
                     strategy: 'simple',
                     mode: 'try'
                 },
-                handler: (request, h) => {
+                handler: async (request, h) => {
                     if (!request.auth.isAuthenticated) {
                         return 'Authentication failed: ' + request.auth.error.message;
                     }
 
+                    let cookieauth = request.cookieAuth;
                     const credentials = request.auth.credentials;
-                    request.cookieAuth.set({
+                    const sid = Uuidv4();
+                    const account = {
+                        userid: credentials.guid,
                         provider: 'email',
+                        email: credentials.email,
                         displayName: credentials.displayName,
-                    });
+                    }
+                    await request.server.app.cache.set(sid, { account: account }, 0);
+                    request.cookieAuth.set({ sid: sid });
                     return h.response({});
                 }
             }
@@ -137,17 +148,18 @@ module.exports = (options) => {
                     }
 
                     const profile = request.auth.credentials.profile;
+                    let guid = null;
 
                     try {
                         const trx = Db.transaction();
-                        const guid = Uuidv4();
                         let res = await Db.select('guid').where('facebook_id', profile.id).from('login_facebook').transacting(trx);
 
                         const expiryInMS = request.auth.credentials.expiresIn * 1000;
                         const expiryDate = new Date((new Date()).getTime() + expiryInMS);
 
-                        if (res.length == 0) {
+                        if (res.length <= 0) {
                             const now = Db.fn.now();
+                            guid = Uuidv4();
                             res = await Db.insert({
                                 guid: guid,
                                 loginTypes: 2,
@@ -164,19 +176,30 @@ module.exports = (options) => {
                                 created_at: now
                             }).into('login_facebook').transacting(trx);
                         }
+                        else
+                        {
+                            guid = res[0]['guid'];
+                        }
 
                         await trx.commit();
                     }
                     catch (error) {
                         await t.rollback();
+                        console.log("ERROR: " + error);
+                        return h.redirect('/');
                     }
 
-                    request.cookieAuth.set({
+                    const sid = Uuidv4();
+                    const account = {
+                        userid: guid,
                         provider: 'facebook',
                         facebookId: profile.id,
                         displayName: profile.displayName,
                         displayImage: profile.picture.data.url,
-                    });
+                    }
+                    await request.server.app.cache.set(sid, { account: account }, 0);
+                    request.cookieAuth.set({ sid: sid });
+
                     return h.redirect('/');
                 }
             },
@@ -194,19 +217,20 @@ module.exports = (options) => {
                         return 'Authentication failed: ' + request.auth.error.message;
                     }
 
-                    console.log(JSON.stringify(request.auth.credentials));
+//                    console.log(JSON.stringify(request.auth.credentials));
                     const profile = request.auth.credentials.profile;
+                    let guid = null;
 
                     try {
                         const trx = Db.transaction();
-                        const guid = Uuidv4();
                         let res = await Db.select('guid').where('google_id', profile.id).from('login_google').transacting(trx);
 
                         const expiryInMS = request.auth.credentials.expiresIn * 1000;
                         const expiryDate = new Date((new Date()).getTime() + expiryInMS);
 
-                        if (res.length == 0) {
+                        if (res.length <= 0) {
                             const now = Db.fn.now();
+                            guid = Uuidv4();
                             res = await Db.insert({
                                 guid: guid,
                                 loginTypes: 2,
@@ -223,19 +247,29 @@ module.exports = (options) => {
                                 created_at: now
                             }).into('login_google').transacting(trx);
                         }
+                        else {
+                            guid = res[0]['guid'];
+                        }
 
                         await trx.commit();
                     }
                     catch (error) {
                         await t.rollback();
+                        console.log("ERROR: " + error);
+                        return h.redirect('/');
                     }
 
-                    request.cookieAuth.set({
+                    const sid = Uuidv4();
+                    const account = {
+                        userid: guid,
                         provider: 'google',
                         googleId: profile.id,
                         displayName: profile.displayName,
                         displayImage: profile.raw.picture
-                    });
+                    }
+                    await request.server.app.cache.set(sid, { account: account }, 0);
+                    request.cookieAuth.set({ sid: sid });
+
                     return h.redirect('/');
                 }
             },

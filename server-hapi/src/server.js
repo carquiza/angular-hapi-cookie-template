@@ -20,6 +20,7 @@ const validate = async (request, email, password, h) => {
                 isValid: true,
                 credentials:
                 {
+                    guid: res['guid'],
                     displayName: email
                 }
             };
@@ -36,11 +37,14 @@ const validate = async (request, email, password, h) => {
 
 const init = async () => {
     const server = Hapi.Server({ port: 3030 });
+
+    const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
+    server.app.cache = cache;
+
     try {
         await server.register([AuthCookie, Bell, AuthBasic]);
     }
-    catch (err)
-    {
+    catch (err) {
         console.error(err);
         process.exit(1);
     }
@@ -49,8 +53,20 @@ const init = async () => {
         password: process.env.COOKIE_PASSWORD,
         cookie: 'artoftech-cookie',
         isSecure: false,
-//        isSameSite: true,
-        clearInvalid:true
+        //        isSameSite: true,
+        clearInvalid: true,
+        validateFunc: async (request, session) => {
+            const cached = await cache.get(session.sid);
+            const out = {
+                valid: !!cached
+            }
+
+            if (out.valid) {
+                out.credentials = cached.account
+            }
+
+            return out;
+        }
     });
 
     server.auth.strategy('simple', 'basic', { validate });
@@ -72,7 +88,7 @@ const init = async () => {
         clientSecret: process.env.GOOGLE_APP_SECRET,
         location: 'https://local.artof.tech',
     });
-//    server.auth.strategy('artoftech-cookie', 'cookie', authCookieOptions);
+    //    server.auth.strategy('artoftech-cookie', 'cookie', authCookieOptions);
 
     // This should be registered only after all auth strategies are configured
     try {
@@ -83,14 +99,14 @@ const init = async () => {
             }
         });
     }
-    catch (err)
-    {
+    catch (err) {
         console.error(err);
         process.exit(1);
     }
 
-    server.bind({
-        session_lookup: []
+    server.state('session', {
+        ttl: 1000 * 60 * 60 * 24, // 1 day in milliseconds
+        encoding: 'base64json'
     });
 
     await server.start();
