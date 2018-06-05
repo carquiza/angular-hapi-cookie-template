@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -8,13 +10,33 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  public email: string = "";
-  public password: string = "";
-  public password2: string = "";
+  public registrationForm: FormGroup;
+  public submitInvalid: boolean = false;
+  
+  public passwordDoesNotMatch: boolean = false;
+  public serverError: string = null;
 
   constructor(private auth:AuthService) { }
 
+  get email(): AbstractControl { return this.registrationForm.get('email'); }
+  get password(): AbstractControl { return this.registrationForm.get('password'); }
+  get password2(): AbstractControl { return this.registrationForm.get('password2'); }
+
   ngOnInit() {
+    this.registrationForm = new FormGroup({
+      'email': new FormControl('', [
+        Validators.required,
+        Validators.email,
+      ]),
+      'password': new FormControl('', [
+        Validators.required,
+        Validators.minLength(7),
+      ]),
+      'password2': new FormControl('', [
+        Validators.required,
+        Validators.minLength(7),
+      ]),
+    });
   }
 
   showError(error)
@@ -23,33 +45,28 @@ export class RegisterComponent implements OnInit {
   }
 
   async doRegister() {
-    if (this.email === "")
-    {
-      this.showError("Enter your email address");
+    this.submitInvalid = false;
+    if (this.registrationForm.invalid) {
+      this.submitInvalid = true;
       return;
     }
-    if (this.password === "")
+    this.passwordDoesNotMatch = false;
+    if (this.password.value !== this.password2.value)
     {
-      this.showError("Enter a password");
+      this.passwordDoesNotMatch = true;
       return;
     };
-    if (this.password !== this.password2)
-    {
-      this.showError("Passwords must match");
-      return;
-    };
+
     try
     {
-      var res = await this.auth.doRegisterEmail(this.email, this.password);
-      console.log("RES");
-      console.log(res);
-      alert(res);
+      await this.auth.doRegisterEmail(this.email.value, this.password.value);
+
     }
     catch (error)
     {
       console.log("ERROR");
       console.log(error);
-      alert(error.error);
+      this.serverError = error.error;
     }
   }
 }

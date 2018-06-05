@@ -80,8 +80,9 @@ module.exports = (options) => {
                 // Try-create email/password combination
                 let success = false;
                 try {
-                    const guid = await Db.transaction(async function (trx) {
-                        const guid = Uuidv4();
+                    let guid = null;
+                    await Db.transaction(async function (trx) {
+                        guid = Uuidv4();
                         let res = await trx.select('guid').where('email', email).from('login_email');
                         if (res.length != 0) {
                             throw new Error('Email already registered');
@@ -95,8 +96,23 @@ module.exports = (options) => {
 
                         success = true;
                         //                    await trx.commit();
-                        return h.response({ redirect: "/" });
                     });
+                    if (success) {
+                        let cookieauth = request.cookieAuth;
+                        const sid = Uuidv4();
+                        const account = {
+                            userid: guid,
+                            provider: 'email',
+                            email: email,
+                            displayName: email,
+                        }
+                        await request.server.app.cache.set(sid, { account: account }, 0);
+                        request.cookieAuth.set({ sid: sid });
+                        return h.response({ redirect: "/" });
+                    }
+                    else {
+                        return h.response({ error: "Could not add user" });
+                    }
                 }
                 catch (error) {
                     //                await t.rollback();

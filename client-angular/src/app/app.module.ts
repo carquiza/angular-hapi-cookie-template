@@ -8,7 +8,7 @@ import { MatDividerModule, MatIconModule, MatMenuModule, MatToolbarModule, MatBu
 
 import { AuthService } from './auth.service';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -28,7 +28,7 @@ import { RegisterComponent } from './register/register.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
+    FormsModule, ReactiveFormsModule,
     FlexLayoutModule,
 
     BrowserAnimationsModule,
