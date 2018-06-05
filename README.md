@@ -1,8 +1,6 @@
 # angular-hapi-cookie-template
 
-An Angular app that uses Facebook, Google and local logins. The back-end is barebones HapiJS, and authentication is handled via basic cookies.
-
-No database is used; you can hook up your own user lookup in server-hapi/src/server.js (validate), and in server-hapi/src/routes.js.
+An Angular app that uses Facebook, Google and local logins. The back-end is barebones HapiJS, and authentication is handled via basic cookies, while knexjs is used for the database.
 
 ### Configure your app
 
