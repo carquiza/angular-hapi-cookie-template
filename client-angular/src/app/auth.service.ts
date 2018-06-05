@@ -40,15 +40,28 @@ export class AuthService {
     });
   }
 
-  public doLogin(email, password) {
+  public async doRegisterEmail(email, password) {
+    var res = await this.http.post('auth/register_email', { email: email, password: password }).toPromise();
+    if (res['error'])
+    {
+      throw res;
+    }
+    window.location.href = '/';
+  }
+
+  public async doLogin(email, password) {
     var auth = `Basic ` + btoa(email + ":" + password);
     let headers = new HttpHeaders({ Authorization: auth });
-    this.http.post('auth/login_email', {}, {
-      headers: headers
-    }).subscribe((data) => {
-      this.isLoggedIn.next(true);
+    try {
+      var res = await this.http.post('auth/login_email', {}, {
+        headers: headers
+      }).toPromise();
       window.location.href = '/';
-    });
+    }
+    catch (error)
+    {
+      alert("Error in doLogin()");
+    }
   }
 
   public doFacebookLogin = () => {

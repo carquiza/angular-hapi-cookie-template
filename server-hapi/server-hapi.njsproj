@@ -22,17 +22,28 @@
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include=".env.template" />
+    <Content Include="src\lib\users\package.json">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="migrations\" />
     <Folder Include="src\" />
     <Folder Include="src\controllers\" />
-    <Folder Include="src\auth\" />
+    <Folder Include="src\controllers\auth\" />
+    <Folder Include="src\lib\" />
+    <Folder Include="src\lib\users\" />
+    <Folder Include="src\routes\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="knexfile.js" />
     <Compile Include="migrations\20180525144106_Users.js" />
-    <Compile Include="src\routes.js" />
+    <Compile Include="src\db.js" />
+    <Compile Include="src\lib\users\index.js" />
+    <Compile Include="src\lib\users\handlers.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\lib\users\routes.js" />
     <Compile Include="src\server.js">
       <SubType>Code</SubType>
     </Compile>
