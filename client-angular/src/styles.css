@@ -11,3 +11,7 @@
 .page-title {
   font-size: xx-large;
 }
+
+mat-error {
+  font-weight: bold;
+}

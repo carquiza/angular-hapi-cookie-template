@@ -35,7 +35,7 @@
           </div>
           <mat-error *ngIf="submitInvalid">Please fill in all the required fields.</mat-error>
           <mat-error *ngIf="serverError">{{serverError}}</mat-error>
-          <div fxLayout="row" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayoutGap="20px" style="padding-top:20px">
             <button mat-stroked-button (click)="doRegister()">Create a new account</button>
           </div>
         </form>
