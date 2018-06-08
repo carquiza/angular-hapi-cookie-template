@@ -10,11 +10,11 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  public registrationForm: FormGroup;
-  public submitInvalid: boolean = false;
+  registrationForm: FormGroup;
+  submitInvalid: boolean = false;
   
-  public passwordDoesNotMatch: boolean = false;
-  public serverError: string = null;
+  passwordDoesNotMatch: boolean = false;
+  serverError: string = null;
 
   constructor(private auth:AuthService) { }
 

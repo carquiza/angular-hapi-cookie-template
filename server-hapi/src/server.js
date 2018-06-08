@@ -5,35 +5,8 @@ require('dotenv').config();
 const Hapi = require('hapi');
 const AuthCookie = require('hapi-auth-cookie');
 const Bell = require('bell');
-const AuthBasic = require('hapi-auth-basic');
 const Db = require('./db');
 const Bcrypt = require('bcrypt');
-
-const validate = async (request, email, password, h) => {
-    try {
-        let res = await Db.select('guid', 'password').where('email', email).from('login_email');
-        if (res.length == 0) {
-            return { isValid: false }
-        }
-        if (await Bcrypt.compare(password, res[0].password)) {
-            return {
-                isValid: true,
-                credentials:
-                {
-                    guid: res['guid'],
-                    displayName: email
-                }
-            };
-        }
-        else {
-            return { isValid: false };
-        }
-    }
-    catch (error)
-    {
-        console.log(error);
-    }
-}
 
 const init = async () => {
     const server = Hapi.Server({ port: 3030 });
@@ -42,7 +15,7 @@ const init = async () => {
     server.app.cache = cache;
 
     try {
-        await server.register([AuthCookie, Bell, AuthBasic]);
+        await server.register([AuthCookie, Bell]);
     }
     catch (err) {
         console.error(err);
@@ -68,8 +41,6 @@ const init = async () => {
             return out;
         }
     });
-
-    server.auth.strategy('simple', 'basic', { validate });
 
     server.auth.strategy('facebook', 'bell', {
         provider: 'facebook',

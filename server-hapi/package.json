@@ -14,7 +14,6 @@
     "bell": "^9.3.0",
     "dotenv": "^5.0.1",
     "hapi": "^17.5.0",
-    "hapi-auth-basic": "^5.0.0",
     "hapi-auth-cookie": "^8.1.0",
     "isemail": "^3.1.2",
     "knex": "^0.14.6",

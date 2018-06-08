@@ -125,28 +125,40 @@ module.exports = (options) => {
         {
             method: '*',
             path: '/auth/login_email',
-            options: {
-                auth: {
-                    strategy: 'simple',
-                    mode: 'try'
-                },
-                handler: async (request, h) => {
-                    if (!request.auth.isAuthenticated) {
-                        return 'Authentication failed: ' + request.auth.error.message;
-                    }
+            options: { auth: false },
+            handler: async (request, h) => {
+                try {
+                    const email = request.payload.email;
+                    const password = request.payload.password;
 
-                    let cookieauth = request.cookieAuth;
-                    const credentials = request.auth.credentials;
-                    const sid = Uuidv4();
-                    const account = {
-                        userid: credentials.guid,
-                        provider: 'email',
-                        email: credentials.email,
-                        displayName: credentials.displayName,
+                    let res = await Db.select('guid', 'password').where('email', email).from('login_email');
+                    if (res.length == 0) {
+                        return h.response({ error: 'Invalid username or password.' });
                     }
-                    await request.server.app.cache.set(sid, { account: account }, 0);
-                    request.cookieAuth.set({ sid: sid });
-                    return h.response({});
+                    if (await Bcrypt.compare(password, res[0].password)) {
+                        let cookieauth = request.cookieAuth;
+                        const credentials = request.auth.credentials;
+                        const sid = Uuidv4();
+                        const account = {
+                            userid: res['guid'],
+                            provider: 'email',
+                            email: email,
+                            displayName: email,
+                        }
+                        await request.server.app.cache.set(sid, { account: account }, 0);
+                        request.cookieAuth.set({ sid: sid });
+                        return h.response({ redirect: '/' });
+                    }
+                    else {
+                        return h.response({ error: 'Invalid username or password.' });
+                    }
+                }
+                catch (error) {
+                    return h.response({ error: 'Invalid username or password.' });
+                }
+
+                if (!request.auth.isAuthenticated) {
+                    return h.response({ error: request.auth.error.message });
                 }
             }
         },

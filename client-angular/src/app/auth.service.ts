@@ -50,18 +50,22 @@ export class AuthService {
   }
 
   public async doLogin(email, password) {
-    var auth = `Basic ` + btoa(email + ":" + password);
-    let headers = new HttpHeaders({ Authorization: auth });
     try {
-      var res = await this.http.post('auth/login_email', {}, {
-        headers: headers
-      }).toPromise();
-      window.location.href = '/';
+      var res = await this.http.post('auth/login_email', { email: email, password: password }).toPromise();
+      if (res['error'])
+      {
+        return { error: res['error'] };
+      }
+      else if (res['redirect'])
+      {
+        return { redirect: res['redirect'] };
+      }
     }
-    catch (error)
-    {
-      alert("Error in doLogin()");
+    catch (error) {
+      console.log(error);
     }
+
+    return { error: 'Could not log in. Please try again later.' };
   }
 
   public doFacebookLogin = () => {

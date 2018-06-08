@@ -14,20 +14,25 @@
           <!--<img height="32" src="assets/img/TwitterLogin.png" />-->
 
         </div>
-        <div class="col">
-          <mat-form-field>
-            Email: <input matInput [(ngModel)]="email" type="email" /><br />
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field>
-            Password: <input matInput [(ngModel)]="password" type="password" /><br />
-          </mat-form-field>
-        </div>
-        <div fxLayout="row" fxLayoutGap="20px">
-          <button mat-stroked-button (click)="auth.doLogin(email, password)">Log in</button>
-          <button mat-stroked-button routerLink="/register">Register new account</button>
-        </div>
+        <form [formGroup]="loginForm">
+          <div class="col">
+            <mat-form-field>
+              Email: <input matInput formControlName="email" type="email" /><br />
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              Password: <input matInput formControlName="password" type="password" /><br />
+            </mat-form-field>
+          </div>
+          <div class="col" style="padding-bottom:20px">
+            <mat-error *ngIf="login_error">{{login_error}}</mat-error>
+          </div>
+          <div fxLayout="row" fxLayoutGap="20px">
+            <button mat-stroked-button (click)="doLogin(email, password)">Log in</button>
+            <button mat-stroked-button routerLink="/register">Register new account</button>
+          </div>
+        </form>
       </div>
     </div>
   </mat-card-content>
