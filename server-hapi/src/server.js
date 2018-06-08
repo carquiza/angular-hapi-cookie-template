@@ -48,7 +48,7 @@ const init = async () => {
         isSecure: true,
         clientId: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        location: 'https://local.artof.tech',
+        location: process.env.BASE_URL,
     });
 
     server.auth.strategy('google', 'bell', {
@@ -57,7 +57,7 @@ const init = async () => {
         isSecure: true,
         clientId: process.env.GOOGLE_APP_ID,
         clientSecret: process.env.GOOGLE_APP_SECRET,
-        location: 'https://local.artof.tech',
+        location: process.env.BASE_URL,
     });
     //    server.auth.strategy('artoftech-cookie', 'cookie', authCookieOptions);
 
