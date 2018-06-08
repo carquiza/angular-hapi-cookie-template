@@ -11,12 +11,10 @@ You will need to create the following configurations files. *.template files hav
     client-angular/src/environments/environment.ts -- copy from the provided environment.ts.template file
 ```
 
-In `server-hapi/src/server.js` is a `validate(request, username, password, h)` function for checking usernames and passwords.
-
 ### Setup local HTTPS
 
 To set up HTTPS for local development:
-- Generate the keys using LetsEncrypt for your site (You will need access to an actual domain and a VPS)
+- Generate the keys using LetsEncrypt for your site (You will need access to an actual domain that you can set up the certificate for)
 - Redirect your domain to localhost using your hosts file
 - Copy the files to the following locations
 ```
