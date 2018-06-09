@@ -140,7 +140,7 @@ module.exports = (options) => {
                         const credentials = request.auth.credentials;
                         const sid = Uuidv4();
                         const account = {
-                            userid: res['guid'],
+                            userid: res[0]['guid'],
                             provider: 'email',
                             email: email,
                             displayName: email,
