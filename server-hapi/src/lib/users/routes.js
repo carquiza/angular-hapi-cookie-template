@@ -81,7 +81,7 @@ module.exports = (options) => {
                 let success = false;
                 try {
                     let guid = null;
-                    await Db.transaction(async function (trx) {
+                    await Db.transaction(async (trx) => {
                         guid = Uuidv4();
                         let res = await trx.select('guid').where('email', email).from('login_email');
                         if (res.length != 0) {
@@ -95,7 +95,7 @@ module.exports = (options) => {
                         res = await Db.insert({ guid: guid, email: email, password: hashed_password, created_at: now }).into('login_email').transacting(trx);
 
                         success = true;
-                        //                    await trx.commit();
+                        // Automatic trx.commit();
                     });
                     if (success) {
                         let cookieauth = request.cookieAuth;
@@ -115,7 +115,7 @@ module.exports = (options) => {
                     }
                 }
                 catch (error) {
-                    //                await t.rollback();
+                    // Automatic t.rollback();
                     return h.response({ error: error.message });
 //                    console.log(error);
                 }
@@ -179,40 +179,39 @@ module.exports = (options) => {
                     let guid = null;
 
                     try {
-                        const trx = Db.transaction();
-                        let res = await Db.select('guid').where('facebook_id', profile.id).from('login_facebook').transacting(trx);
+                        await Db.transaction(async (trx) => {
+                            let res = await Db.select('guid').where('facebook_id', profile.id).from('login_facebook').transacting(trx);
 
-                        const expiryInMS = request.auth.credentials.expiresIn * 1000;
-                        const expiryDate = new Date((new Date()).getTime() + expiryInMS);
+                            const expiryInMS = request.auth.credentials.expiresIn * 1000;
+                            const expiryDate = new Date((new Date()).getTime() + expiryInMS);
 
-                        if (res.length <= 0) {
-                            const now = Db.fn.now();
-                            guid = Uuidv4();
-                            res = await Db.insert({
-                                guid: guid,
-                                loginTypes: 2,
-                                name: profile.displayName,
-                                created_at: now
-                            }).into('users').transacting(trx);
-                            res = await Db.insert({
-                                guid: guid,
-                                name: profile.displayName,
-                                email: profile.email,
-                                facebook_id: profile.id,
-                                access_token: request.auth.credentials.token,
-                                access_token_expires_at: expiryDate,
-                                created_at: now
-                            }).into('login_facebook').transacting(trx);
-                        }
-                        else
-                        {
-                            guid = res[0]['guid'];
-                        }
-
-                        await trx.commit();
+                            if (res.length <= 0) {
+                                const now = Db.fn.now();
+                                guid = Uuidv4();
+                                res = await Db.insert({
+                                    guid: guid,
+                                    loginTypes: 2,
+                                    name: profile.displayName,
+                                    created_at: now
+                                }).into('users').transacting(trx);
+                                res = await Db.insert({
+                                    guid: guid,
+                                    name: profile.displayName,
+                                    email: profile.email,
+                                    facebook_id: profile.id,
+                                    access_token: request.auth.credentials.token,
+                                    access_token_expires_at: expiryDate,
+                                    created_at: now
+                                }).into('login_facebook').transacting(trx);
+                            }
+                            else {
+                                guid = res[0]['guid'];
+                            }
+                            // Automatic trx.commit
+                        });
                     }
                     catch (error) {
-                        await t.rollback();
+                        // Automatic trx.rollback
                         console.log("ERROR: " + error);
                         return h.redirect('/');
                     }
@@ -250,39 +249,39 @@ module.exports = (options) => {
                     let guid = null;
 
                     try {
-                        const trx = Db.transaction();
-                        let res = await Db.select('guid').where('google_id', profile.id).from('login_google').transacting(trx);
+                        await Db.transaction(async (trx) => {
+                            let res = await Db.select('guid').where('google_id', profile.id).from('login_google').transacting(trx);
 
-                        const expiryInMS = request.auth.credentials.expiresIn * 1000;
-                        const expiryDate = new Date((new Date()).getTime() + expiryInMS);
+                            const expiryInMS = request.auth.credentials.expiresIn * 1000;
+                            const expiryDate = new Date((new Date()).getTime() + expiryInMS);
 
-                        if (res.length <= 0) {
-                            const now = Db.fn.now();
-                            guid = Uuidv4();
-                            res = await Db.insert({
-                                guid: guid,
-                                loginTypes: 2,
-                                name: profile.displayName,
-                                created_at: now
-                            }).into('users').transacting(trx);
-                            res = await Db.insert({
-                                guid: guid,
-                                name: profile.displayName,
-                                email: profile.email,
-                                google_id: profile.id,
-                                access_token: request.auth.credentials.token,
-                                access_token_expires_at: expiryDate,
-                                created_at: now
-                            }).into('login_google').transacting(trx);
-                        }
-                        else {
-                            guid = res[0]['guid'];
-                        }
-
-                        await trx.commit();
+                            if (res.length <= 0) {
+                                const now = Db.fn.now();
+                                guid = Uuidv4();
+                                res = await Db.insert({
+                                    guid: guid,
+                                    loginTypes: 2,
+                                    name: profile.displayName,
+                                    created_at: now
+                                }).into('users').transacting(trx);
+                                res = await Db.insert({
+                                    guid: guid,
+                                    name: profile.displayName,
+                                    email: profile.email,
+                                    google_id: profile.id,
+                                    access_token: request.auth.credentials.token,
+                                    access_token_expires_at: expiryDate,
+                                    created_at: now
+                                }).into('login_google').transacting(trx);
+                            }
+                            else {
+                                guid = res[0]['guid'];
+                            }
+                            // Automatic trx.commit
+                        });
                     }
                     catch (error) {
-                        await t.rollback();
+                        // Automatic trx.rollback
                         console.log("ERROR: " + error);
                         return h.redirect('/');
                     }
