@@ -9,7 +9,7 @@ const Db = require('./db');
 const Bcrypt = require('bcrypt');
 
 const init = async () => {
-    const server = Hapi.Server({ port: 3030 });
+    const server = Hapi.Server({ port: process.env.SERVER_PORT });
 
     const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
     server.app.cache = cache;
