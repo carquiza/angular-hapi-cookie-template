@@ -29,7 +29,7 @@
             <mat-error *ngIf="login_error">{{login_error}}</mat-error>
           </div>
           <div fxLayout="row" fxLayoutGap="20px" style="padding-top:20px">
-            <button mat-stroked-button (click)="doLogin(email, password)">Log in</button>
+            <button mat-stroked-button (click)="doLogin()">Log in</button>
             <button mat-stroked-button routerLink="/register">Register new account</button>
           </div>
         </form>
