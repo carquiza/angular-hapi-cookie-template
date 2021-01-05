@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bcrypt": "^2.0.1",
     "bell": "^9.3.0",
     "dotenv": "^5.0.1",
